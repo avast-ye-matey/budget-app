@@ -18,6 +18,21 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import { Typography } from '@mui/material';
+
+
+// import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 
 
 
@@ -58,6 +73,48 @@ function App() {
       </div>
     );
   }
+
+  function FormDialog() {
+    const [open, setOpen] = React.useState(false);
+  
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+  
+    return (
+      <div>
+        <Button variant="outlined" onClick={handleClickOpen}>
+          Open form dialog
+        </Button>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Subscribe</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              To subscribe to this website, please enter your email address here. We
+              will send updates occasionally.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Email Address"
+              type="email"
+              fullWidth
+              variant="standard"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleClose}>Subscribe</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  }
   
 
   // function menuButtonGroup() {
@@ -82,7 +139,7 @@ function App() {
     };
   
     return (  
-      <div className='fixed w-screen bottom-0 h-[80px]'>  
+      <div className='fixed w-screen bottom-0'>  
         <Tabs 
           value={tabValue} 
           onChange={handleChange} 
@@ -91,21 +148,80 @@ function App() {
           sx={{
             '.MuiTabs-indicator': {top: 0}            
           }}>
-          <Tab icon={<PhoneIcon />} label="RECENTS" />
-          <Tab icon={<FavoriteIcon />} label="FAVORITES" />
+          <Tab icon={<PhoneIcon />} label="quick access" />
+          <Tab icon={<FavoriteIcon />} label="budgets" />
           <Tab icon={<PersonPinIcon />} label="NEARBY" />
         </Tabs> 
       </div>     
     );
   }
 
+  // function quickAccessHeader() {
+  //   return (
+  //     <div>
+
+  //     </div>
+  //   )
+  // }
+
+  function QuickAccessHeader() {
+    const quickAccessTitle = 'surplus'
+    const quickAccessTitleValue = 1
+
+    const quickAccessTitleInValue = 99
+    const quickAccessTitleIn = 'in'
+    
+    const quickAccessTitleOutValue = 100
+    const quickAccessTitleOut = 'out'
+
+    const allowanceValueDay = 80
+    const allowanceValueMonth = 200
+    
+
+      return (
+        <div className='flex flex-col items-center w-screen text-center'>
+            <Typography variant='h3' gutterBottom>{quickAccessTitle}</Typography>
+            <Typography variant='h3' gutterBottom>${quickAccessTitleValue}</Typography>
+
+          <div className='flex flex-row w-screen justify-evenly items-center'>
+            <div>
+              <Typography variant='h5' gutterBottom>${quickAccessTitleInValue}</Typography>
+              <Typography variant='h5' gutterBottom>{quickAccessTitleIn}</Typography>              
+            </div>
+            {/* <div>
+              <Typography variant='h5' gutterBottom>vs</Typography>
+            </div> */}
+            <div>
+              <Typography variant='h5' gutterBottom>${quickAccessTitleOutValue}</Typography>
+              <Typography variant='h5' gutterBottom>{quickAccessTitleOut}</Typography>              
+            </div>
+          </div>
+
+          <Typography variant='h5' gutterBottom>you can spend</Typography>
+          <div className='flex flex-row w-screen'>
+            <Typography variant='h6' gutterBottom sx={{ width: '50%', textAlign: 'right', paddingRight: '2%' }}>${allowanceValueDay}</Typography>
+            <Typography variant='h6' gutterBottom sx={{ width: '50%', textAlign: 'left', paddingLeft: '2%' }}>today</Typography>
+          </div>
+          <div  className='flex flex-row w-screen'>
+            <Typography variant='h6' gutterBottom sx={{ width: '50%', textAlign: 'right', paddingRight: '2%' }}>${allowanceValueMonth}</Typography>
+            <Typography variant='h6' gutterBottom sx={{ width: '50%', textAlign: 'left', paddingLeft: '2%' }}>month</Typography>
+          </div>
+         
+
+
+        </div>
+      )
+    }
+
   function quickAccess() {
     return (
       <div>
-        <BasicSelect />
+        {/* <BasicSelect /> */}
+        <FormDialog />
         <h1>
           Quick Access
         </h1>
+        <QuickAccessHeader />
       </div>
     )
   }
