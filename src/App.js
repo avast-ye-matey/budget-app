@@ -139,7 +139,7 @@ function App() {
     };
   
     return (  
-      <div className='fixed w-screen bottom-0'>  
+      <div className='fixed w-screen bottom-0 z-1 bg-white'>  
         <Tabs 
           value={tabValue} 
           onChange={handleChange} 
@@ -197,14 +197,55 @@ function App() {
             </div>
           </div>
 
-          <Typography variant='h5' gutterBottom>you can spend</Typography>
-          <div className='flex flex-row w-screen'>
-            <Typography variant='h6' gutterBottom sx={{ width: '50%', textAlign: 'right', paddingRight: '2%' }}>${allowanceValueDay}</Typography>
-            <Typography variant='h6' gutterBottom sx={{ width: '50%', textAlign: 'left', paddingLeft: '2%' }}>today</Typography>
+          <div className='bg-white w-[85%] rounded-2xl mt-5 py-2'>
+            <Typography variant='h5' gutterBottom
+              sx={{
+                fontWeight: 'light'
+              }}>you can spend</Typography>
+            <div className='flex flex-row w-full'>
+              <Typography variant='h6' gutterBottom 
+                sx={{ 
+                  width: '50%', 
+                  textAlign: 'right', 
+                  paddingRight: '2%',
+                  fontWeight: 'light' }}>${allowanceValueDay}</Typography>
+              <Typography variant='h6' gutterBottom 
+                sx={{ 
+                  width: '50%', 
+                  textAlign: 'left', 
+                  paddingLeft: '2%',
+                  fontWeight: 'regular' }}>today</Typography>
+            </div>
+            <div  className='flex flex-row w-full'>
+              <Typography variant='h6' gutterBottom 
+                sx={{ 
+                  width: '50%', 
+                  textAlign: 'right', 
+                  paddingRight: '2%',
+                  fontWeight: 'light' }}>${allowanceValueMonth}</Typography>
+              <Typography variant='h6' gutterBottom 
+                sx={{ 
+                  width: '50%', 
+                  textAlign: 'left', 
+                  paddingLeft: '2%',
+                  fontWeight: 'regular' }}>month</Typography>
+            </div>
           </div>
-          <div  className='flex flex-row w-screen'>
-            <Typography variant='h6' gutterBottom sx={{ width: '50%', textAlign: 'right', paddingRight: '2%' }}>${allowanceValueMonth}</Typography>
-            <Typography variant='h6' gutterBottom sx={{ width: '50%', textAlign: 'left', paddingLeft: '2%' }}>month</Typography>
+
+
+          <div className='bg-white w-[85%] rounded-2xl mt-5 p-4'>
+            <div>
+              <div className='flex flex-row justify-between'>
+                <Typography>Entertainment</Typography>
+                <Typography>$180</Typography>
+              </div>
+              <div>
+                {/* bar line */}
+              </div>
+              <div className='flex flex-row justify-end'>
+                <Typography variant="overline">spent $20 / $1,200</Typography>
+              </div>
+            </div>
           </div>
          
 
@@ -244,7 +285,7 @@ function App() {
                               : ''
 
   return (
-    <div className="App">
+    <div className="App bg-[#2196f3] h-screen">
       {showActiveScreen()}
       {menuTabGroup()}
       
