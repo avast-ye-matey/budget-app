@@ -34,6 +34,15 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 
+import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
+
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+// import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+
 
 
 function App() {
@@ -139,7 +148,7 @@ function App() {
     };
   
     return (  
-      <div className='fixed w-screen bottom-0 z-1 bg-white'>  
+      <div className='fixed w-screen bottom-0 z-1 bg-white h-20'>  
         <Tabs 
           value={tabValue} 
           onChange={handleChange} 
@@ -164,7 +173,7 @@ function App() {
   //   )
   // }
 
-  function QuickAccessHeader() {
+  function BudgetHeader() {
     const quickAccessTitle = 'surplus'
     const quickAccessTitleValue = 1
 
@@ -174,28 +183,76 @@ function App() {
     const quickAccessTitleOutValue = 100
     const quickAccessTitleOut = 'out'
 
-    const allowanceValueDay = 80
-    const allowanceValueMonth = 200
+    
     
 
-      return (
-        <div className='flex flex-col items-center w-screen text-center'>
-            <Typography variant='h3' gutterBottom>{quickAccessTitle}</Typography>
-            <Typography variant='h3' gutterBottom>${quickAccessTitleValue}</Typography>
+    return (
+      <div className='flex flex-col items-center w-screen text-center'>
+          <Typography variant='h3' gutterBottom>{quickAccessTitle}</Typography>
+          <Typography variant='h3' gutterBottom>${quickAccessTitleValue}</Typography>        
+      </div>
+    )
+  }
 
-          <div className='flex flex-row w-screen justify-evenly items-center'>
-            <div>
-              <Typography variant='h5' gutterBottom>${quickAccessTitleInValue}</Typography>
-              <Typography variant='h5' gutterBottom>{quickAccessTitleIn}</Typography>              
+  function BudgetInHeader() {
+    return (
+      <div className='text-white m-2'>
+        <Typography variant='h5' sx={{ fontWeight: '100' }}>in</Typography>
+        <Typography variant='h4'>$2,000</Typography>
+      </div>
+    )
+  }
+
+  function BudgetInAccordion() {
+    const [expanded, setExpanded] = React.useState(false);
+  
+    const handleChange = (panel) => (event, isExpanded) => {
+      setExpanded(isExpanded ? panel : false);
+    };
+
+    return (
+      
+      <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')} 
+        sx={{ borderRadius: '1rem', margin: '0 7.5%'}}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1bh-content"
+            id="panel1bh-header"
+          >
+            <div className='flex flex-row w-full'>
+              <Typography sx={{ width: '60%', flexShrink: 0 }}>
+                one-time
+              </Typography>
+              <Typography sx={{ width: '40%', color: 'text.secondary' }}>20%</Typography>
             </div>
-            {/* <div>
-              <Typography variant='h5' gutterBottom>vs</Typography>
-            </div> */}
-            <div>
-              <Typography variant='h5' gutterBottom>${quickAccessTitleOutValue}</Typography>
-              <Typography variant='h5' gutterBottom>{quickAccessTitleOut}</Typography>              
-            </div>
-          </div>
+          </AccordionSummary>
+          <AccordionDetails sx={{ margin: '0 7.5%' }}>
+            <Typography>
+              Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
+              Aliquam eget maximus est, id dignissim quam.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+       
+    )
+  }
+
+  function BudgetOutHeader() {
+    
+    return (
+      <div className='text-white m-2'>
+        <Typography variant='h5' sx={{ fontWeight: '100' }}>out</Typography>
+        <Typography variant='h4'>$2,000</Typography>
+      </div>
+    )
+  }
+
+  function QuickAccessCards() {
+    const allowanceValueDay = 80
+    const allowanceValueMonth = 200
+
+    return (
+        <div className='flex flex-col items-center w-screen text-center'>
 
           <div className='bg-white w-[85%] rounded-2xl mt-5 py-2'>
             <Typography variant='h5' gutterBottom
@@ -233,36 +290,173 @@ function App() {
           </div>
 
 
+          {/* item blurbs */}
           <div className='bg-white w-[85%] rounded-2xl mt-5 p-4'>
             <div>
               <div className='flex flex-row justify-between'>
                 <Typography>Entertainment</Typography>
                 <Typography>$180</Typography>
               </div>
-              <div>
-                {/* bar line */}
+              <div className='my-2'>
+                <LinearProgress variant="determinate" value={50} />
               </div>
-              <div className='flex flex-row justify-end'>
-                <Typography variant="overline">spent $20 / $1,200</Typography>
+              <div className='flex flex-row justify-end font-thin'>
+                <Typography 
+                  variant="subtitle2"
+                  sx={{
+                    fontWeight: '300'
+                  }}>spent $20 / $1,200</Typography>
               </div>
             </div>
           </div>
-         
+          {/* item blurbs */}
 
+
+          <div className='bg-white w-[85%] rounded-2xl mt-5 p-4'>
+            <div>
+              <div className='flex flex-row justify-between'>
+                <Typography>Entertainment</Typography>
+                <Typography>$180</Typography>
+              </div>
+              <div className='my-2'>
+                <LinearProgress variant="determinate" value={50} />
+              </div>
+              <div className='flex flex-row justify-end font-thin'>
+                <Typography 
+                  variant="subtitle2"
+                  sx={{
+                    fontWeight: '300'
+                  }}>spent $20 / $1,200</Typography>
+              </div>
+            </div>
+          </div>
+
+
+          <div className='bg-white w-[85%] rounded-2xl mt-5 p-4 drop-shadow-[-11px_11px_47px_rgba(0,0,0,0.2)]'>
+            <div>
+              <div className='flex flex-row justify-between'>
+                <Typography>Entertainment</Typography>
+                <Typography>$180</Typography>
+              </div>
+              <div className='my-2'>
+                <LinearProgress variant="determinate" value={50} />
+              </div>
+              <div className='flex flex-row justify-end font-thin'>
+                <Typography 
+                  variant="subtitle2"
+                  sx={{
+                    fontWeight: '300'
+                  }}>spent $20 / $1,200</Typography>
+              </div>
+            </div>
+          </div>
 
         </div>
-      )
-    }
+    )
+  }
+
+  function BudgetOutAccordion() {
+    const [expanded, setExpanded] = React.useState(false);
+  
+    const handleChange = (panel) => (event, isExpanded) => {
+      setExpanded(isExpanded ? panel : false);
+    };
+  
+    return (
+      <div>
+        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1bh-content"
+            id="panel1bh-header"
+          >
+            <div className='flex flex-row w-full'>
+              <Typography sx={{ width: '60%', flexShrink: 0 }}>
+                one-time
+              </Typography>
+              <Typography sx={{ width: '40%', color: 'text.secondary' }}>20%</Typography>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
+              Aliquam eget maximus est, id dignissim quam.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel2bh-content"
+            id="panel2bh-header"
+          >
+            <div className='flex flex-row w-full'>            
+              <Typography sx={{ width: '60%', flexShrink: 0 }}>subscriptions</Typography>
+              <Typography sx={{ width: '40%',color: 'text.secondary' }}>
+                30%
+              </Typography>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus,
+              varius pulvinar diam eros in elit. Pellentesque convallis laoreet
+              laoreet.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel3bh-content"
+            id="panel3bh-header"
+          >
+            <div className='flex flex-row w-full'>
+              <Typography sx={{ width: '60%', flexShrink: 0 }}>
+                bills
+              </Typography>
+              <Typography sx={{ width: '40%',color: 'text.secondary' }}>
+                40%
+              </Typography>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit
+              amet egestas eros, vitae egestas augue. Duis vel est augue.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        {/* <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel4bh-content"
+            id="panel4bh-header"
+          >
+            <Typography sx={{ width: '33%', flexShrink: 0 }}>Personal data</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit
+              amet egestas eros, vitae egestas augue. Duis vel est augue.
+            </Typography>
+          </AccordionDetails>
+        </Accordion> */}
+      </div>
+    );
+  }
 
   function quickAccess() {
     return (
-      <div>
+      <div className='overflow-y-auto h-full'>
         {/* <BasicSelect /> */}
-        <FormDialog />
-        <h1>
+        
+        {/* <h1>
           Quick Access
-        </h1>
-        <QuickAccessHeader />
+        </h1> */}
+        {/* <QuickAccessHeader /> */}
+        <QuickAccessCards />
+        <div className='h-24'></div>
       </div>
     )
   }
@@ -273,6 +467,13 @@ function App() {
         <h1>
           Budgets
         </h1>
+        <FormDialog />
+        <BudgetHeader />
+        <BudgetInHeader />
+        <BudgetInAccordion />
+        <BudgetOutHeader />
+        <BudgetOutAccordion />
+        <div className='h-24'></div>
       </div>
     )
   }
