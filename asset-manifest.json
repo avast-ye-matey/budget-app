@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/budget-app/static/css/main.5945a39d.css",
-    "main.js": "/budget-app/static/js/main.e0e5b09c.js",
+    "main.css": "/budget-app/static/css/main.b464f014.css",
+    "main.js": "/budget-app/static/js/main.baa58556.js",
     "static/js/787.c4271f98.chunk.js": "/budget-app/static/js/787.c4271f98.chunk.js",
     "static/media/roboto-all-500-normal.woff": "/budget-app/static/media/roboto-all-500-normal.0ab669b7a0d19b178f57.woff",
     "static/media/roboto-all-700-normal.woff": "/budget-app/static/media/roboto-all-700-normal.a457fde362a540fcadff.woff",
@@ -37,12 +37,12 @@
     "static/media/roboto-greek-ext-300-normal.woff2": "/budget-app/static/media/roboto-greek-ext-300-normal.35b9d6be04b95f0f0530.woff2",
     "static/media/roboto-greek-ext-700-normal.woff2": "/budget-app/static/media/roboto-greek-ext-700-normal.bd9854c751441ccc1a70.woff2",
     "index.html": "/budget-app/index.html",
-    "main.5945a39d.css.map": "/budget-app/static/css/main.5945a39d.css.map",
-    "main.e0e5b09c.js.map": "/budget-app/static/js/main.e0e5b09c.js.map",
+    "main.b464f014.css.map": "/budget-app/static/css/main.b464f014.css.map",
+    "main.baa58556.js.map": "/budget-app/static/js/main.baa58556.js.map",
     "787.c4271f98.chunk.js.map": "/budget-app/static/js/787.c4271f98.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.5945a39d.css",
-    "static/js/main.e0e5b09c.js"
+    "static/css/main.b464f014.css",
+    "static/js/main.baa58556.js"
   ]
 }
