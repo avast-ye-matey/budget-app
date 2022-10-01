@@ -54,7 +54,20 @@ import ListItemText from '@mui/material/ListItemText';
 // import DeleteIcon from '@mui/icons-material/Delete';
 import { TransitionGroup } from 'react-transition-group';
 
+import InputAdornment from '@mui/material/InputAdornment';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Switch from '@mui/material/Switch';
+import Paper from '@mui/material/Paper';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { Theme } from '@mui/material/styles';
 
+// import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+// import DeleteIcon from '@mui/icons-material/Delete';
+
+// import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 
 function App() {
@@ -63,6 +76,8 @@ function App() {
 
   const [age, setAge] = useState('');
   
+  const [ budgetInTotal, setBudgetInTotal ] = useState(0)
+  const [ budgetInExpenseArray, addBudgetInExpenseArray ] = useState([{ test : 20 }])
   
 
   function BasicSelect() {
@@ -133,6 +148,186 @@ function App() {
             <Button onClick={handleClose}>Subscribe</Button>
           </DialogActions>
         </Dialog>
+      </div>
+    );
+  }
+
+  console.log(Array.isArray(budgetInExpenseArray))
+  console.log(typeof(budgetInExpenseArray))
+  console.log(budgetInExpenseArray)
+
+  const [ expense, setExpense ] = useState([])
+  function AddExpenseForm() {
+    const [open, setOpen] = React.useState(false);
+    const [ inputTitle, setInputTitle ] = useState('')
+    const [ inputValue, setInputValue ] = useState()
+
+    // console.log(typeof(inputTitle))
+    // console.log(typeof(inputValue))
+  
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+      // addBudgetInExpenseArray(previous => ({ ...previous,  [inputTitle] : inputValue }))
+      // addBudgetInExpenseArray(previous => [...previous,  [inputTitle] : inputValue ])
+      addBudgetInExpenseArray(previous => previous.concat({[inputTitle] : inputValue}))
+    };
+
+    return (
+      <div>
+        <Button variant="outlined" onClick={handleClickOpen}>
+          Add Expense
+        </Button>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Expense</DialogTitle>
+          <DialogContent>
+            {/* <DialogContentText>
+              To subscribe to this website, please enter your email address here. We
+              will send updates occasionally.
+            </DialogContentText> */}
+            <OutlinedInput
+              autoFocus              
+              fullWidth
+              variant="outlined"
+              type='string'
+              onChange={(i) => setInputTitle(i.target.value)}
+              // startAdornment={<InputAdornment position="start">$</InputAdornment>}
+            />
+            <OutlinedInput
+              autoFocus              
+              fullWidth
+              variant="outlined"
+              type='number'
+              onChange={(i) => setInputValue(parseFloat(i.target.value))}
+              startAdornment={<InputAdornment position="start">$</InputAdornment>}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Add</Button>
+            {/* <Button onClick={handleClose}>Subscribe</Button> */}
+          </DialogActions>
+        </Dialog>
+      </div>
+    )
+  }
+
+
+
+  const icon = (
+    <Paper sx={{ m: 1 }} elevation={4}>
+      <Box component="svg" sx={{ width: 100, height: 100 }}>
+        <Box
+          component="polygon"
+          sx={{
+            fill: (theme: Theme) => theme.palette.common.white,
+            stroke: (theme) => theme.palette.divider,
+            strokeWidth: 1,
+          }}
+          points="0,100 50,00, 100,100"
+        />
+      </Box>
+    </Paper>
+  );
+
+
+  function BudgetInCollapse() {
+    const [ checked, setChecked ] = React.useState(false);
+    const [ test1, setTest1 ] = useState([1])
+    // const [ isExpanded, setExpansion ] = useState(<ExpandMoreIcon />)
+
+    const expandIcon = () => checked ? <ExpandMoreIcon /> : <ExpandLessIcon />
+      
+  
+    const handleChange = () => {
+      setChecked((prev) => !prev);
+    };
+
+    const addTest = () => {
+      setTest1( test1 => [...test1, 1])
+    }
+
+    const testtest1 = () => {
+      return(
+        <div>
+          {test1}
+          <IconButton 
+            aria-label="delete"
+            onClick={addTest}>
+            <DeleteIcon />
+          </IconButton> 
+          {/* <AddExpenseForm />          */}
+        </div>
+      )
+    }
+  
+    return (
+      <div className='flex flex-col items-center w-screen'> 
+        <div className='w-[90%] px-4 p-4 bg-white rounded-2xl flex flex-col items-center text-center'>
+
+          <div className='flex flex-col justify-between w-full'>
+            {/* <IconButton 
+              aria-label="delete"
+              onClick={addTest}>
+              <DeleteIcon />
+            </IconButton> */}
+            <div className='flex flex-row'>
+              <div className='w-[60%] text-left'>
+                <Typography variant='h6'>
+                  test
+                </Typography>
+              </div>
+
+            <div className='w-[30%]'>
+                <Typography variant='h6'>
+                  20%
+                </Typography>
+              </div>
+
+              <div className='w-[10%]'>
+                <IconButton 
+                  aria-label="expand"
+                  onClick={handleChange}>
+                  {expandIcon()}
+                </IconButton>
+              </div>
+            </div>
+
+            {budgetInExpenseArray.map(x => {
+              return( 
+                <div className='flex flex-row'>
+                  <div className='w-[60%] text-left'>
+                    <Typography variant='h6'>
+                      {Object.keys(x)}
+                    </Typography>
+                    {console.log(x)}
+                  </div>
+
+                  <div className='w-[30%]'>
+                    <Typography variant='h6'>
+                      {Object.values(x)}%
+                    </Typography>
+                  </div>
+                </div>
+              )
+            })}
+
+          </div>          
+
+          <Box>
+            <div>
+              <Collapse in={checked}>{icon}</Collapse>
+              <Collapse in={checked}>{testtest1()}</Collapse>                
+            </div>          
+          </Box>
+
+          <div>
+            <AddExpenseForm /> 
+          </div>
+
+        </div>
       </div>
     );
   }
@@ -562,18 +757,17 @@ function App() {
 
   function budgets() {
     return (
-      <div>
-        <h1>
-          Budgets
-        </h1>
-        <FormDialog />
-        <BudgetHeader />
+      <div>        
+        {/* <FormDialog /> */}
+        <BudgetHeader />        
         <BudgetInHeader />
-        <BudgetInAccordion />
+        {/* <BudgetInAccordion /> */}
+        <BudgetInCollapse />
         <BudgetOutHeader />
         <BudgetOutAccordion />
         <TransitionGroupExample />
         <TestField />
+        <AddExpenseForm />
         <div className='h-24'></div>
       </div>
     )
