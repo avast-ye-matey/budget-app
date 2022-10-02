@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
@@ -69,6 +69,11 @@ import Stack from '@mui/material/Stack';
 
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
+// import List from '@mui/material/List';
+// import ListItem from '@mui/material/ListItem';
+// import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+
 
 function App() {
   const [ activeScreen, setActiveScreen ] = useState(quickAccess)
@@ -78,6 +83,8 @@ function App() {
   
   const [ budgetInTotal, setBudgetInTotal ] = useState(0)
   const [ budgetInExpenseArray, addBudgetInExpenseArray ] = useState([{ test : 20 }])
+
+  const [ budgetInHeader, updateBudgetInHeader ] = useState(0)
   
 
   function BasicSelect() {
@@ -237,6 +244,10 @@ function App() {
     const [ checked, setChecked ] = React.useState(false);
     const [ test1, setTest1 ] = useState([1])
     // const [ isExpanded, setExpansion ] = useState(<ExpandMoreIcon />)
+    // const [ checkedComplex, setCheckedComplex ] = useState([])
+
+
+    
 
     const expandIcon = () => checked ? <ExpandMoreIcon /> : <ExpandLessIcon />
       
@@ -261,55 +272,111 @@ function App() {
           {/* <AddExpenseForm />          */}
         </div>
       )
+    }    
+
+
+    const [ toggle, setToggle ] = useState(false)
+    const [ whatsHere, addWhatsHere ] = useState([])
+
+    const happy = (index) => {      
+      if  (whatsHere.map(x => console.log(Object.keys(x)) )) {
+        // console.log('gggg', index)
+        // console.log(x)
+        whatsHere.map(x => {
+          if (Object.keys(x) === index) {
+            console.log('tttt', Object.values(x))
+            addWhatsHere(previous => [...previous, {[index] : !Object.values(x)}])
+          }
+        })
+      } else {
+        addWhatsHere(previous => [...previous, {[index] : true}])      
+      }
     }
+
+    function handleIncrementClick(index) {
+      console.log('length', whatsHere.length)
+      if (whatsHere.length === 0) {
+        console.log('1111')
+        addWhatsHere([{ index: index, toggle: true }])        
+      } else {
+        console.log('22222')
+        const addValue = whatsHere.map((c, i) => {
+          if (c.index === index) {    
+            console.log('33333')        
+            return { index: i, toggle: !c.toggle }
+          } else {
+            return c
+          }
+        })
+        console.log('addValue', addValue)
+        addWhatsHere( [...whatsHere, addValue] )
+      }
+      // const nextCounters = whatsHere.map((c, i) => {
+      //   if (i === index) {
+      //     // Increment the clicked counter
+      //     return c + 1;
+      //   } else {
+      //     // The rest haven't changed
+      //     return c;
+      //   }
+      // });
+      // addWhatsHere(nextCounters);
+    }
+
+    console.log('here',whatsHere)
   
     return (
       <div className='flex flex-col items-center w-screen'> 
         <div className='w-[90%] px-4 p-4 bg-white rounded-2xl flex flex-col items-center text-center'>
 
-          <div className='flex flex-col justify-between w-full'>
-            {/* <IconButton 
-              aria-label="delete"
-              onClick={addTest}>
-              <DeleteIcon />
-            </IconButton> */}
-            <div className='flex flex-row'>
-              <div className='w-[60%] text-left'>
-                <Typography variant='h6'>
-                  test
-                </Typography>
-              </div>
+          <div className='flex flex-col justify-between w-full'>            
 
-            <div className='w-[30%]'>
-                <Typography variant='h6'>
-                  20%
-                </Typography>
-              </div>
-
-              <div className='w-[10%]'>
-                <IconButton 
-                  aria-label="expand"
-                  onClick={handleChange}>
-                  {expandIcon()}
-                </IconButton>
-              </div>
-            </div>
-
-            {budgetInExpenseArray.map(x => {
+            {budgetInExpenseArray.map((x, index) => {
+              // console.log('index',index)
+              // {happy(index)}
               return( 
-                <div className='flex flex-row'>
-                  <div className='w-[60%] text-left'>
-                    <Typography variant='h6'>
-                      {Object.keys(x)}
-                    </Typography>
-                    {console.log(x)}
+                <div className='mb-4' key={index}>
+
+                  <div className='flex flex-row'>
+                    <div className='w-[60%] text-left'>
+                      <Typography variant='h6'>
+                        {Object.keys(x)}
+                      </Typography>
+                      {console.log(x)}
+                    </div>
+
+                    <div className='w-[30%]'>
+                      <Typography variant='h6'>
+                        ${Object.values(x)}
+                      </Typography>
+                    </div>
+
+                    {/* <div className='w-[10%]'>
+                      <IconButton 
+                        aria-label="expand"
+                        onClick={handleChange}>
+                        {expandIcon()}
+                      </IconButton>
+                    </div>                     */}
+                    <div className='w-[10%]'>
+                      <IconButton 
+                        aria-label="expand"                        
+                        onClick={() => handleIncrementClick(index)}>
+                        {expandIcon()}
+                      </IconButton>
+                    </div>  
+
                   </div>
 
-                  <div className='w-[30%]'>
-                    <Typography variant='h6'>
-                      {Object.values(x)}%
-                    </Typography>
-                  </div>
+                  <Box>
+                    <div>
+                      <Collapse in={toggle}>{icon}</Collapse>
+                      <Collapse in={checked}>{testtest1()}</Collapse>                
+                    </div>          
+                  </Box>
+
+                  <Divider varient='fullWidth' sx={{ borderBottomWidth: '.1rem' }}/>
+
                 </div>
               )
             })}
@@ -402,10 +469,20 @@ function App() {
   }
 
   function BudgetInHeader() {
+    const budgetInExpenseValuesArray = budgetInExpenseArray.map(x => Object.values(x)[0])    
+   
+    const budgetInExpenseTotal = () => {
+      let sum = 0
+      for (const x of budgetInExpenseValuesArray) {
+        sum += x
+      }
+      return sum
+    }    
+    
     return (
       <div className='text-white m-2'>
         <Typography variant='h5' sx={{ fontWeight: '100' }}>in</Typography>
-        <Typography variant='h4'>$2,000</Typography>
+        <Typography variant='h4'>${budgetInExpenseTotal()}</Typography>
       </div>
     )
   }
