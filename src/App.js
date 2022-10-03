@@ -240,152 +240,41 @@ function App() {
   );
 
 
-  function BudgetInCollapse() {
-    const [ checked, setChecked ] = React.useState(false);
-    const [ test1, setTest1 ] = useState([1])
-    // const [ isExpanded, setExpansion ] = useState(<ExpandMoreIcon />)
-    // const [ checkedComplex, setCheckedComplex ] = useState([])
-
-
-    
-
-    // const expandIcon = (index) => checked ? <ExpandMoreIcon /> : <ExpandLessIcon />
-      
-  
-    const handleChange = () => {
-      setChecked((prev) => !prev);
-    };
-
-    const addTest = () => {
-      setTest1( test1 => [...test1, 1])
-    }
-
-    const testtest1 = () => {
-      return(
-        <div>
-          {test1}
-          <IconButton 
-            aria-label="delete"
-            onClick={addTest}>
-            <DeleteIcon />
-          </IconButton> 
-          {/* <AddExpenseForm />          */}
-        </div>
-      )
-    }    
-
-
-    const [ toggle, setToggle ] = useState(false)
-    const [ whatsHere, addWhatsHere ] = useState([ {index: 'default', toggle: 'default'} ])
-
-    const happy = (index) => {      
-      if  (whatsHere.map(x => console.log(Object.keys(x)) )) {
-        // console.log('gggg', index)
-        // console.log(x)
-        whatsHere.map(x => {
-          if (Object.keys(x) === index) {
-            console.log('tttt', Object.values(x))
-            addWhatsHere(previous => [...previous, {[index] : !Object.values(x)}])
-          }
-        })
-      } else {
-        addWhatsHere(previous => [...previous, {[index] : true}])      
-      }
-    }
-
-    function handleIncrementClick(index) {
-      console.log(index)
-      
-      // console.log('length', whatsHere.length)
-      if (whatsHere.length === 0) {
-        // console.log('1111')
-        console.log('before',whatsHere) 
+  function BudgetInCollapse() {   
+    const [ whatsHere, addWhatsHere ] = useState([ {index: 'default', toggle: 'default'} ])  
+     
+    function handleCollapseButtonClick(index) {      
+      if (whatsHere.length === 0) {        
         addWhatsHere([{ index: index, toggle: true }])   
-        console.log('after',whatsHere)     
-      } else {
-        // console.log('22222')
-        console.log('map', whatsHere.map(x => x.index))
-        console.log(index)
+      } else {        
         const filterArray = whatsHere.filter(x => x.index === index)
-        console.log('filter', filterArray)
-
         if (filterArray.length === 0) {
           addWhatsHere(previous => previous.concat({ index: index, toggle: true }))
         } else {
           const addValue = whatsHere.map((c, i) => {
             if (c.index === index) {    
-              // console.log('33333') 
-              console.log(c)       
-              // return { ...c, index: i, toggle: !c.toggle }
               return { index: i, toggle: !c.toggle }
-            } else {
-              // addWhatsHere(previous => previous.concat({ index: [index], toggle: true}))
-              // return { ...c, index: i, toggle: true }
-              // return { index: i, toggle: true }
-  
-              // const nextArtists = [
-              //   ...whatsHere.slice(0, 0),
-              //   { index: i, toggle: true },
-              //   ...whatsHere.slice(0)              
-              // ]            
+            } else {                    
               return c            
             }     
           })
           console.log('addValue', addValue)
           addWhatsHere(addValue)
-        }        
-        // addWhatsHere( [...whatsHere, addValue] )
-        // addWhatsHere(previous => previous.concat(addValue) )
-        
-        // const nextArtists = whatsHere.concat(addValue)
-        // addWhatsHere(nextArtists)
-      }
-      // const nextCounters = whatsHere.map((c, i) => {
-      //   if (i === index) {
-      //     // Increment the clicked counter
-      //     return c + 1;
-      //   } else {
-      //     // The rest haven't changed
-      //     return c;
-      //   }
-      // });
-      // addWhatsHere(nextCounters);      
-      console.log('here',whatsHere)    
-    }
-    console.log('outside',whatsHere) 
-
-    // const expand = (index) => {
-    //   if (whatsHere.length === 0) {
-    //     return <ExpandMoreIcon />
-    //   } else {      
-    //     whatsHere.map(x => {
-    //       if (x.index === index && x.toggle === true) {
-    //         console.log('<ExpandLessIcon />')
-    //         return <ExpandLessIcon />
-    //       } else {
-    //         console.log('loser')
-    //         return 
-    //       }
-    //     })
-    //   }
-    // }
+        }             
+      }         
+    }     
     
-   function expand(index) {
-    console.log('jkjk')
-    const filterArray = whatsHere.filter(x => x.index === index && x.toggle === true)
-    console.log(filterArray)
+   function expandIcon(index) {    
+    const filterArray = whatsHere.filter(x => x.index === index && x.toggle === true)    
     if (filterArray.length === 0) {
       return <ExpandMoreIcon />
     } else {
       return <ExpandLessIcon />
     }
-    // whatsHere.map(x => x.index === index && x.toggle === true ? <ExpandMoreIcon /> : <ExpandLessIcon />)
    }
 
-   function expandCollapse(index) {
-    
-    const filterArray = whatsHere.filter(x => x.index === index && x.toggle === true)
-    
+   function expandCollapse(index) {    
+    const filterArray = whatsHere.filter(x => x.index === index && x.toggle === true)    
     if (filterArray.length === 0) {
       return false
     } else {
@@ -421,8 +310,8 @@ function App() {
                     <div className='w-[10%]'>
                       <IconButton 
                         aria-label="expand"                        
-                        onClick={() => handleIncrementClick(index)}>
-                        {expand(index)}
+                        onClick={() => handleCollapseButtonClick(index)}>
+                        {expandIcon(index)}
                       </IconButton>
                     </div>  
 
@@ -431,7 +320,7 @@ function App() {
                   <Box>
                     <div>
                       <Collapse in={expandCollapse(index)}>{icon}</Collapse>
-                      <Collapse in={checked}>{testtest1()}</Collapse>                
+                      {/* <Collapse in={checked}>{testtest1()}</Collapse>                 */}
                     </div>          
                   </Box>
 
@@ -443,12 +332,12 @@ function App() {
 
           </div>          
 
-          <Box>
+          {/* <Box>
             <div>
               <Collapse in={checked}>{icon}</Collapse>
               <Collapse in={checked}>{testtest1()}</Collapse>                
             </div>          
-          </Box>
+          </Box> */}
 
           <div>
             <AddExpenseForm /> 
