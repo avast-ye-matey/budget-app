@@ -159,9 +159,9 @@ function App() {
     );
   }
 
-  console.log(Array.isArray(budgetInExpenseArray))
-  console.log(typeof(budgetInExpenseArray))
-  console.log(budgetInExpenseArray)
+  // console.log(Array.isArray(budgetInExpenseArray))
+  // console.log(typeof(budgetInExpenseArray))
+  // console.log(budgetInExpenseArray)
 
   const [ expense, setExpense ] = useState([])
   function AddExpenseForm() {
@@ -249,7 +249,7 @@ function App() {
 
     
 
-    const expandIcon = () => checked ? <ExpandMoreIcon /> : <ExpandLessIcon />
+    // const expandIcon = (index) => checked ? <ExpandMoreIcon /> : <ExpandLessIcon />
       
   
     const handleChange = () => {
@@ -276,7 +276,7 @@ function App() {
 
 
     const [ toggle, setToggle ] = useState(false)
-    const [ whatsHere, addWhatsHere ] = useState([])
+    const [ whatsHere, addWhatsHere ] = useState([ {index: 'default', toggle: 'default'} ])
 
     const happy = (index) => {      
       if  (whatsHere.map(x => console.log(Object.keys(x)) )) {
@@ -294,22 +294,51 @@ function App() {
     }
 
     function handleIncrementClick(index) {
-      console.log('length', whatsHere.length)
+      console.log(index)
+      
+      // console.log('length', whatsHere.length)
       if (whatsHere.length === 0) {
-        console.log('1111')
-        addWhatsHere([{ index: index, toggle: true }])        
+        // console.log('1111')
+        console.log('before',whatsHere) 
+        addWhatsHere([{ index: index, toggle: true }])   
+        console.log('after',whatsHere)     
       } else {
-        console.log('22222')
-        const addValue = whatsHere.map((c, i) => {
-          if (c.index === index) {    
-            console.log('33333')        
-            return { index: i, toggle: !c.toggle }
-          } else {
-            return c
-          }
-        })
-        console.log('addValue', addValue)
-        addWhatsHere( [...whatsHere, addValue] )
+        // console.log('22222')
+        console.log('map', whatsHere.map(x => x.index))
+        console.log(index)
+        const filterArray = whatsHere.filter(x => x.index === index)
+        console.log('filter', filterArray)
+
+        if (filterArray.length === 0) {
+          addWhatsHere(previous => previous.concat({ index: index, toggle: true }))
+        } else {
+          const addValue = whatsHere.map((c, i) => {
+            if (c.index === index) {    
+              // console.log('33333') 
+              console.log(c)       
+              // return { ...c, index: i, toggle: !c.toggle }
+              return { index: i, toggle: !c.toggle }
+            } else {
+              // addWhatsHere(previous => previous.concat({ index: [index], toggle: true}))
+              // return { ...c, index: i, toggle: true }
+              // return { index: i, toggle: true }
+  
+              // const nextArtists = [
+              //   ...whatsHere.slice(0, 0),
+              //   { index: i, toggle: true },
+              //   ...whatsHere.slice(0)              
+              // ]            
+              return c            
+            }     
+          })
+          console.log('addValue', addValue)
+          addWhatsHere(addValue)
+        }        
+        // addWhatsHere( [...whatsHere, addValue] )
+        // addWhatsHere(previous => previous.concat(addValue) )
+        
+        // const nextArtists = whatsHere.concat(addValue)
+        // addWhatsHere(nextArtists)
       }
       // const nextCounters = whatsHere.map((c, i) => {
       //   if (i === index) {
@@ -320,11 +349,50 @@ function App() {
       //     return c;
       //   }
       // });
-      // addWhatsHere(nextCounters);
+      // addWhatsHere(nextCounters);      
+      console.log('here',whatsHere)    
     }
+    console.log('outside',whatsHere) 
 
-    console.log('here',whatsHere)
-  
+    // const expand = (index) => {
+    //   if (whatsHere.length === 0) {
+    //     return <ExpandMoreIcon />
+    //   } else {      
+    //     whatsHere.map(x => {
+    //       if (x.index === index && x.toggle === true) {
+    //         console.log('<ExpandLessIcon />')
+    //         return <ExpandLessIcon />
+    //       } else {
+    //         console.log('loser')
+    //         return 
+    //       }
+    //     })
+    //   }
+    // }
+    
+   function expand(index) {
+    console.log('jkjk')
+    const filterArray = whatsHere.filter(x => x.index === index && x.toggle === true)
+    console.log(filterArray)
+    if (filterArray.length === 0) {
+      return <ExpandMoreIcon />
+    } else {
+      return <ExpandLessIcon />
+    }
+    // whatsHere.map(x => x.index === index && x.toggle === true ? <ExpandMoreIcon /> : <ExpandLessIcon />)
+   }
+
+   function expandCollapse(index) {
+    
+    const filterArray = whatsHere.filter(x => x.index === index && x.toggle === true)
+    
+    if (filterArray.length === 0) {
+      return false
+    } else {
+      return true
+    }
+   }
+
     return (
       <div className='flex flex-col items-center w-screen'> 
         <div className='w-[90%] px-4 p-4 bg-white rounded-2xl flex flex-col items-center text-center'>
@@ -332,8 +400,7 @@ function App() {
           <div className='flex flex-col justify-between w-full'>            
 
             {budgetInExpenseArray.map((x, index) => {
-              // console.log('index',index)
-              // {happy(index)}
+              
               return( 
                 <div className='mb-4' key={index}>
 
@@ -350,19 +417,12 @@ function App() {
                         ${Object.values(x)}
                       </Typography>
                     </div>
-
-                    {/* <div className='w-[10%]'>
-                      <IconButton 
-                        aria-label="expand"
-                        onClick={handleChange}>
-                        {expandIcon()}
-                      </IconButton>
-                    </div>                     */}
+                    
                     <div className='w-[10%]'>
                       <IconButton 
                         aria-label="expand"                        
                         onClick={() => handleIncrementClick(index)}>
-                        {expandIcon()}
+                        {expand(index)}
                       </IconButton>
                     </div>  
 
@@ -370,7 +430,7 @@ function App() {
 
                   <Box>
                     <div>
-                      <Collapse in={toggle}>{icon}</Collapse>
+                      <Collapse in={expandCollapse(index)}>{icon}</Collapse>
                       <Collapse in={checked}>{testtest1()}</Collapse>                
                     </div>          
                   </Box>
