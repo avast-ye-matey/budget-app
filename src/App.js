@@ -74,6 +74,12 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 // import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 
+import EditIcon from '@mui/icons-material/Edit';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+
+
+import FormHelperText from '@mui/material/FormHelperText';
+
 
 function App() {
   const [ activeScreen, setActiveScreen ] = useState(quickAccess)
@@ -82,7 +88,7 @@ function App() {
   const [age, setAge] = useState('');
   
   const [ budgetInTotal, setBudgetInTotal ] = useState(0)
-  const [ budgetInExpenseArray, addBudgetInExpenseArray ] = useState([{ test : 20 }])
+  const [ budgetInExpenseArray, addBudgetInExpenseArray ] = useState([{ title: 'test', cost: 20, header: 'test header' }])
 
   const [ budgetInHeader, updateBudgetInHeader ] = useState(0)
   
@@ -168,9 +174,16 @@ function App() {
     const [open, setOpen] = React.useState(false);
     const [ inputTitle, setInputTitle ] = useState('')
     const [ inputValue, setInputValue ] = useState()
+    const [ inputCategory, setInputCategory ] = useState('')
 
     // console.log(typeof(inputTitle))
     // console.log(typeof(inputValue))
+
+    const [age, setAge] = React.useState('Placeholder');
+
+    const handleChange = (event) => {
+      setAge(event.target.value);
+    };
   
     const handleClickOpen = () => {
       setOpen(true);
@@ -183,6 +196,37 @@ function App() {
       addBudgetInExpenseArray(previous => previous.concat({[inputTitle] : inputValue}))
     };
 
+    const headerInput = () => (age === '') ? <div>
+                                              <OutlinedInput 
+                                                  // disabled='false'              
+                                                  autoFocus              
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type='string'
+                                                  onChange={(i) => setInputCategory(i.target.value)}
+                                                  value={inputCategory}
+                                                  // startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                                                />
+                                                <FormHelperText>Category Header</FormHelperText>
+                                              </div>
+                                            : <div>
+                                                <OutlinedInput  
+                                                  disabled='true'            
+                                                  autoFocus              
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type='string'
+                                                  value={age}
+                                                  // startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                                                />
+                                                <FormHelperText>Category Header</FormHelperText>
+                                              </div>
+      
+    console.log(age)
+
+    const collapseHeaderInput = () => age === '' ? true : false
+      
+
     return (
       <div>
         <Button variant="outlined" onClick={handleClickOpen}>
@@ -190,12 +234,44 @@ function App() {
         </Button>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Expense</DialogTitle>
+          
           <DialogContent>
+            <FormControl sx={{ width: '100%' }}>
+              <Select
+                sx={{ width: '100%' }}
+                value={age}
+                onChange={handleChange}
+                displayEmpty
+                inputProps={{ 'aria-label': 'Main Header' }}
+              >
+                {/* <MenuItem value="">
+                  <em>None</em>
+                </MenuItem> */}
+                <MenuItem disabled value='Placeholder'><em>Choose Category</em></MenuItem>
+                <MenuItem value=''>--Add New Category--</MenuItem>
+                {budgetInExpenseArray.map(x => <MenuItem value={x.title}>{x.title}</MenuItem>)}
+                {/* <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem> */}
+              </Select>
+              <FormHelperText>Main Header</FormHelperText>
+            </FormControl>
+            <Collapse in={collapseHeaderInput()}>{headerInput()}</Collapse>
+            
+            {/* <OutlinedInput              
+              autoFocus              
+              fullWidth
+              variant="outlined"
+              type='string'
+              onChange={(i) => setInputTitle(i.target.value)}
+              // startAdornment={<InputAdornment position="start">$</InputAdornment>}
+            /> */}
+            
             {/* <DialogContentText>
               To subscribe to this website, please enter your email address here. We
               will send updates occasionally.
             </DialogContentText> */}
-            <OutlinedInput
+            <OutlinedInput              
               autoFocus              
               fullWidth
               variant="outlined"
@@ -203,7 +279,8 @@ function App() {
               onChange={(i) => setInputTitle(i.target.value)}
               // startAdornment={<InputAdornment position="start">$</InputAdornment>}
             />
-            <OutlinedInput
+            <FormHelperText>Title</FormHelperText>
+            <OutlinedInput              
               autoFocus              
               fullWidth
               variant="outlined"
@@ -211,6 +288,7 @@ function App() {
               onChange={(i) => setInputValue(parseFloat(i.target.value))}
               startAdornment={<InputAdornment position="start">$</InputAdornment>}
             />
+            <FormHelperText>Cost</FormHelperText>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Add</Button>
@@ -282,6 +360,35 @@ function App() {
     }
    }
 
+   const CollapseDetail = () => {
+    return (
+      <div>
+        <div className='mb-4'>
+          {/* <DeleteIcon />
+          <EditIcon /> */}
+          <AddCircleIcon />
+        </div>
+        
+        <div className='flex flex-row w-full mb-4'>
+          <div className='w-[40%]'>
+            <Typography variant='body2'>
+              test
+            </Typography>
+          </div>
+          <div className='w-[30%]'>
+            <Typography variant='body2'>
+              $10
+            </Typography>
+          </div>
+          <div className='flex w-[30%] justify-evenly'>
+            <DeleteIcon fontSize='small' />
+            <EditIcon fontSize='small' />
+          </div>
+        </div>
+      </div>
+)
+   }
+
     return (
       <div className='flex flex-col items-center w-screen'> 
         <div className='w-[90%] px-4 p-4 bg-white rounded-2xl flex flex-col items-center text-center'>
@@ -296,14 +403,15 @@ function App() {
                   <div className='flex flex-row'>
                     <div className='w-[60%] text-left'>
                       <Typography variant='h6'>
-                        {Object.keys(x)}
+                        {/* {Object.keys(x)} */}
+                        {x.header}
                       </Typography>
                       {console.log(x)}
                     </div>
 
                     <div className='w-[30%]'>
                       <Typography variant='h6'>
-                        ${Object.values(x)}
+                        ${x.cost}
                       </Typography>
                     </div>
                     
@@ -317,14 +425,18 @@ function App() {
 
                   </div>
 
-                  <Box>
-                    <div>
-                      <Collapse in={expandCollapse(index)}>{icon}</Collapse>
-                      {/* <Collapse in={checked}>{testtest1()}</Collapse>                 */}
-                    </div>          
-                  </Box>
+                  
+                  <div className='flex flex-col w-full'>
+                    {/* <Collapse in={expandCollapse(index)}>{icon}</Collapse> */}
+                    <Collapse in={expandCollapse(index)}>{CollapseDetail()}</Collapse>
+                    {/* <Collapse in={checked}>{testtest1()}</Collapse>                 */}
+                    
+
+                  </div>          
+                  
 
                   <Divider varient='fullWidth' sx={{ borderBottomWidth: '.1rem' }}/>
+                  
 
                 </div>
               )
@@ -418,7 +530,7 @@ function App() {
   }
 
   function BudgetInHeader() {
-    const budgetInExpenseValuesArray = budgetInExpenseArray.map(x => Object.values(x)[0])    
+    const budgetInExpenseValuesArray = budgetInExpenseArray.map(x => x.cost)    
    
     const budgetInExpenseTotal = () => {
       let sum = 0
