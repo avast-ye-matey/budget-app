@@ -88,25 +88,25 @@ function App() {
   const [age, setAge] = useState('');
   
   const [ budgetInTotal, setBudgetInTotal ] = useState(0)
-  const [ budgetInExpenseArray, addBudgetInExpenseArray ] = useState([{ category: 'test category', title: 'test', cost: 20 }])
+  const [ budgetInExpenseArray, addBudgetInExpenseArray ] = useState([{ category: 'test in category', title: 'test', cost: 20 }])
+  const [ budgetOutExpenseArray, addBudgetOutExpenseArray ] = useState([{ category: 'test out category', title: 'item', cost: 40}])
 
   const [ budgetInHeader, updateBudgetInHeader ] = useState(0)
 
-  // const [ budgetInCategoryTitles, updateBudgetInCategoryTitles ] = useState(() => () => {
-  //   const categoryTitles = []
-  //   budgetInExpenseArray.map(x => categoryTitles.push(x.category))
-  //   const updatedCategoryTitles = [...new Set(categoryTitles)]
-  //   // console.log('ddd',updatedCategoryTitles)
-  //   // console.log('vvv',categoryTitles)
-  //   return updatedCategoryTitles
-  // })
   
-  // console.log(budgetInCategoryTitles())
-  // console.log('titles',budgetInCategoryTitles)
 
   function budgetInCategoryTitleHandler() {
     const categoryTitles = []
     budgetInExpenseArray.map(x => categoryTitles.push(x.category))
+    const updatedCategoryTitles = [...new Set(categoryTitles)]
+    // console.log('ddd',updatedCategoryTitles)
+    // console.log('vvv',categoryTitles)
+    return updatedCategoryTitles
+  }
+
+  function budgetOutCategoryTitleHandler() {
+    const categoryTitles = []
+    budgetOutExpenseArray.map(x => categoryTitles.push(x.category))
     const updatedCategoryTitles = [...new Set(categoryTitles)]
     // console.log('ddd',updatedCategoryTitles)
     // console.log('vvv',categoryTitles)
@@ -184,21 +184,14 @@ function App() {
         </Dialog>
       </div>
     );
-  }
+  }  
 
-  // console.log(Array.isArray(budgetInExpenseArray))
-  // console.log(typeof(budgetInExpenseArray))
-  console.log(budgetInExpenseArray)
-
-  const [ expense, setExpense ] = useState([])
-  function AddExpenseForm() {
-    const [open, setOpen] = React.useState(false);
+  // const [ expense, setExpense ] = useState([])
+  function AddExpenseFormBudgetIn() {
+    const [ open, setOpen ] = useState(false);
     const [ inputTitle, setInputTitle ] = useState('')
     const [ inputValue, setInputValue ] = useState()
     const [ inputCategory, setInputCategory ] = useState('')
-
-    // console.log(typeof(inputTitle))
-    // console.log(typeof(inputValue))
 
     const [age, setAge] = React.useState('Placeholder');
 
@@ -216,8 +209,7 @@ function App() {
     };
 
     const handleAddExpense = () => {
-      // addBudgetInExpenseArray(previous => {previous.concat({[inputTitle] : inputValue}))
-      
+      // addBudgetInExpenseArray(previous => {previous.concat({[inputTitle] : inputValue}))      
       addBudgetInExpenseArray(previous => previous.concat({ category: inputCategory, title: inputTitle, cost: inputValue }))
       setOpen(false); 
     }
@@ -252,10 +244,9 @@ function App() {
                                                 {/* <FormHelperText>Category Header</FormHelperText> */}
                                               </div>
       
-    // console.log(age)
+    
 
-    const collapseHeaderInput = () => age === '' ? true : false
-      
+    const collapseHeaderInput = () => age === '' ? true : false      
 
     return (
       <div>
@@ -315,7 +306,124 @@ function App() {
     )
   }
 
+  function AddExpenseFormBudgetOut() {
+    const [ open, setOpen ] = useState(false);
+    const [ inputTitle, setInputTitle ] = useState('')
+    const [ inputValue, setInputValue ] = useState()
+    const [ inputCategory, setInputCategory ] = useState('')
 
+    const [age, setAge] = React.useState('Placeholder');
+
+    const handleChange = (event) => {
+      setAge(event.target.value);
+      setInputCategory(event.target.value);
+    };
+  
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);      
+    };
+
+    const handleAddExpense = () => {
+      // addBudgetInExpenseArray(previous => {previous.concat({[inputTitle] : inputValue}))      
+      addBudgetOutExpenseArray(previous => previous.concat({ category: inputCategory, title: inputTitle, cost: inputValue }))
+      setOpen(false); 
+    }
+
+    const headerInput = () => (age === '') ? <div>
+                                              <TextField 
+                                                  // disabled='false' 
+                                                  sx={{ margin: '1rem 0'}}             
+                                                  autoFocus              
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type='string'
+                                                  label="Category Name"
+                                                  onChange={(i) => setInputCategory(i.target.value)}
+                                                  value={inputCategory}
+                                                  // startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                                                />
+                                                {/* <FormHelperText>Category Header</FormHelperText> */}
+                                              </div>
+                                            : <div>
+                                                <TextField  
+                                                  sx={{ margin: '1rem 0'}}
+                                                  disabled={true}           
+                                                  autoFocus              
+                                                  fullWidth
+                                                  variant="outlined"
+                                                  type='string'
+                                                  label="Category Name"
+                                                  value={age}
+                                                  // startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                                                />
+                                                {/* <FormHelperText>Category Header</FormHelperText> */}
+                                              </div>
+      
+    
+
+    const collapseHeaderInput = () => age === '' ? true : false      
+
+    return (
+      <div>
+        <Button variant="outlined" onClick={handleClickOpen}>
+          Add Expense
+        </Button>
+        <Dialog open={open} onClose={handleClose}>
+          {/* <DialogTitle>Expense</DialogTitle> */}
+          
+          <DialogContent>
+            <FormControl sx={{ width: '100%' }}>
+              <Select
+                sx={{ width: '100%' }}
+                value={age}
+                onChange={handleChange}
+                displayEmpty
+                label="Category Name"
+                inputProps={{ 'aria-label': 'Main Header' }}
+              >                
+                <MenuItem disabled value='Placeholder'><em>Choose Category</em></MenuItem>
+                <MenuItem value=''>--Add New Category--</MenuItem>
+                {budgetOutCategoryTitleHandler().map((x, index) => <MenuItem value={x} key={index}>{x}</MenuItem>)}                
+              </Select>
+              
+            </FormControl>
+            <Collapse in={collapseHeaderInput()}>{headerInput()}</Collapse>            
+            
+            <TextField 
+              sx={{ margin: '1rem 0' }}
+              fullWidth
+              id="outlined-basic" 
+              label="Expense Name" 
+              variant="outlined" 
+              type='string'
+              onChange={(i) => setInputTitle(i.target.value)}              
+            />
+            <TextField 
+              sx={{ margin: '1rem 0' }}
+              fullWidth
+              id="outlined-basic" 
+              label="Cost" 
+              variant="outlined" 
+              type='number'
+              onChange={(i) => setInputValue(parseFloat(i.target.value))}
+              InputProps={{
+                startAdornment: <InputAdornment position="start">$</InputAdornment>,
+              }}
+            />           
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>exit</Button>
+            <Button onClick={handleAddExpense}>Add</Button>
+            {/* <Button onClick={handleClose}>Subscribe</Button> */}
+          </DialogActions>
+        </Dialog>
+      </div>
+    )
+  }
 
   const icon = (
     <Paper sx={{ m: 1 }} elevation={4}>
@@ -335,17 +443,17 @@ function App() {
 
 
   function BudgetInCollapse() {   
-    const [ whatsHere, addWhatsHere ] = useState([ {index: 'default', toggle: 'default'} ])  
+    const [ categoryCollapseToggle, addCategoryCollapseToggle ] = useState([ {index: 'default', toggle: 'default'} ])  
      
     function handleCollapseButtonClick(index) {      
-      if (whatsHere.length === 0) {        
-        addWhatsHere([{ index: index, toggle: true }])   
+      if (categoryCollapseToggle.length === 0) {        
+        addCategoryCollapseToggle([{ index: index, toggle: true }])   
       } else {        
-        const filterArray = whatsHere.filter(x => x.index === index)
+        const filterArray = categoryCollapseToggle.filter(x => x.index === index)
         if (filterArray.length === 0) {
-          addWhatsHere(previous => previous.concat({ index: index, toggle: true }))
+          addCategoryCollapseToggle(previous => previous.concat({ index: index, toggle: true }))
         } else {
-          const addValue = whatsHere.map((c, i) => {
+          const addValue = categoryCollapseToggle.map((c, i) => {
             if (c.index === index) {    
               return { index: i, toggle: !c.toggle }
             } else {                    
@@ -353,13 +461,13 @@ function App() {
             }     
           })
           console.log('addValue', addValue)
-          addWhatsHere(addValue)
+          addCategoryCollapseToggle(addValue)
         }             
       }         
     }     
     
    function expandIcon(index) {    
-    const filterArray = whatsHere.filter(x => x.index === index && x.toggle === true)    
+    const filterArray = categoryCollapseToggle.filter(x => x.index === index && x.toggle === true)    
     if (filterArray.length === 0) {
       return <ExpandMoreIcon />
     } else {
@@ -368,131 +476,36 @@ function App() {
    }
 
   function expandCollapse(index) {    
-    const filterArray = whatsHere.filter(x => x.index === index && x.toggle === true)    
+    const filterArray = categoryCollapseToggle.filter(x => x.index === index && x.toggle === true)    
     if (filterArray.length === 0) {
       return false
     } else {
       return true
     }
-   }
-
+   }   
   
-
-  function collapseDetail(x) { 
-    // console.log('x',x) 
-    // let detailArray = []
-    budgetInExpenseArray.map((y,index) => {
-      // console.log('y',y) 
-      // console.log('y category',y.category) 
-      if (y.category === x) {
-        // console.log('true')
-        // console.log(x)        
-          return (
-            <div>
-              <h1>hi</h1>
-              <div className='mb-4'>
-                {/* <DeleteIcon />
-                <EditIcon /> */}
-                <AddCircleIcon />
-              </div>
-              
-              <div className='flex flex-row w-full mb-4'>
-                <div className='w-[40%]'>
-                  <Typography variant='body2'>
-                    {y.title}
-                  </Typography>
-                </div>
-                <div className='w-[30%]'>
-                  <Typography variant='body2'>
-                    {y.cost}
-                  </Typography>
-                </div>
-                <div className='flex w-[30%] justify-evenly'>
-                  <DeleteIcon fontSize='small' />
-                  <EditIcon fontSize='small' />
-                </div>
-              </div>
-            </div>  
-          )         
-      }                       
-    })    
-  }
-
-  const foobar = (x) => {
-    budgetInExpenseArray.map(x => {
-     
-      
-        <h1>{x.category}</h1>
-      
-    })
-  }
-
-  {console.log('yoyoyo',collapseDetail('test category'))}
-  // {console.log('ssssss',collapseDetail('test category').map(x => console.log(x)))}
-
-
-    // const budgetInExpenseValuesArray = budgetInExpenseArray.map(y => y.cost)    
-    
-    // const budgetInExpenseTotal = () => {
-    //   let sum = 0
-    //   for (const i of budgetInExpenseValuesArray) {
-    //     sum += icon
-    //   }
-    //   return sum
-    // }   
-
-    const budgetInCategoryTotal = (x) => {
-      // console.log(x.cost)
-      let sum = 0
-      budgetInExpenseArray.map(y => {
-        if (x === y.category) {
-          sum =+ y.cost  
-        }  return sum    
-      })
-      // console.log('sum', sum)
-      return sum
-    }
-    
-  
-    // const budgetInCategoryTitleArray = () => {
-    //   const categoryTitles = []
-    //   budgetInExpenseArray.map(x => categoryTitles.push(x.category))
-    //   const updatedCategoryTitles = [...new Set(categoryTitles)]
-    //   // console.log('ddd',updatedCategoryTitles)
-    //   // console.log('vvv',categoryTitles)
-    //   return updatedCategoryTitles
-    // }
-
-    // console.log(budgetInCategoryTitleArray())
-
-    const foobar2 = (x, index) => {
-      budgetInExpenseArray.map(y => {
-        if (x === y.category) {
-          return <Collapse in={expandCollapse(index)}>{y.title}</Collapse>
-        }
-      })
-    }
-
-
+  const budgetInCategoryTotal = (x) => {      
+    let sum = 0
+    budgetInExpenseArray.map(y => {
+      if (x === y.category) {
+        sum =+ y.cost  
+      }  return sum    
+    })      
+    return sum
+  }   
 
     return (
       <div className='flex flex-col items-center w-screen'> 
         <div className='w-[90%] px-4 p-4 bg-white rounded-2xl flex flex-col items-center text-center'>
 
-          <div className='flex flex-col justify-between w-full'>            
-
-            {/* {budgetInExpenseArray.map((x, index) => { */}
-            {budgetInCategoryTitleHandler().map((x, index) => {
-
-              
-              
+          <div className='flex flex-col justify-between w-full'>   
+            {budgetInCategoryTitleHandler().map((x, index) => {               
               return( 
                 <div className='mb-4' key={index}>
 
                   <div className='flex flex-row'>
                     <div className='w-[60%] text-left'>
-                      <Typography variant='h6'>
-                        {/* {Object.keys(x)} */}
+                      <Typography variant='h6'>                        
                         {x}
                       </Typography>
                       {console.log(x)}
@@ -513,42 +526,160 @@ function App() {
                     </div>  
 
                   </div>
-
-                  {/* {console.log('yoyoyo',collapseDetail(x))} */}
-                  <div className='flex flex-col w-full'>
-                    {/* <Collapse in={expandCollapse(index)}>{icon}</Collapse> */}
-
-                    <Collapse in={expandCollapse(index)}>{collapseDetail(x)}</Collapse>
-
-                    {/* <Collapse in={checked}>{testtest1()}</Collapse>                 */}
+                  
+                  <div className='flex flex-col w-full'>                       
                     {budgetInExpenseArray.map(y => {
                       if (x === y.category) {
-                        return <Collapse in={expandCollapse(index)}>{y.title}</Collapse>
-                      }})}
-                    <Collapse in={expandCollapse(index)}>{foobar(x)}</Collapse>
-                    <Collapse in={expandCollapse(index)}>{<h1>sup</h1>}</Collapse>
+                        return (
+                          <div>
+                            <Collapse in={expandCollapse(index)}>                              
+                              {<div>
+                                {y.title}
+                                {y.cost}
+                                <DeleteIcon fontSize='small' />
+                                <EditIcon fontSize='small' />
+                              </div>}     
+                            </Collapse>
+                          </div>
+                        )
+                      }})}      
+                  </div>                   
 
-                  </div>          
-                  
-
-                  <Divider varient='fullWidth' sx={{ borderBottomWidth: '.1rem' }}/>
-                  
+                  <Divider varient='fullWidth' sx={{ borderBottomWidth: '.1rem' }}/>                  
 
                 </div>
               )
             })}
 
-          </div>          
-
-          {/* <Box>
-            <div>
-              <Collapse in={checked}>{icon}</Collapse>
-              <Collapse in={checked}>{testtest1()}</Collapse>                
-            </div>          
-          </Box> */}
+          </div>         
 
           <div>
-            <AddExpenseForm /> 
+            <AddExpenseFormBudgetIn /> 
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  function BudgetOutCollapse() {   
+    const [ categoryCollapseToggle, addCategoryCollapseToggle ] = useState([ {index: 'default', toggle: 'default'} ])  
+     
+    function handleCollapseButtonClick(index) {      
+      if (categoryCollapseToggle.length === 0) {        
+        addCategoryCollapseToggle([{ index: index, toggle: true }])   
+      } else {        
+        const filterArray = categoryCollapseToggle.filter(x => x.index === index)
+        if (filterArray.length === 0) {
+          addCategoryCollapseToggle(previous => previous.concat({ index: index, toggle: true }))
+        } else {
+          const addValue = categoryCollapseToggle.map((c, i) => {
+            if (c.index === index) {    
+              return { index: i, toggle: !c.toggle }
+            } else {                    
+              return c            
+            }     
+          })
+          console.log('addValue', addValue)
+          addCategoryCollapseToggle(addValue)
+        }             
+      }         
+    }     
+    
+   function expandIcon(index) {    
+    const filterArray = categoryCollapseToggle.filter(x => x.index === index && x.toggle === true)    
+    if (filterArray.length === 0) {
+      return <ExpandMoreIcon />
+    } else {
+      return <ExpandLessIcon />
+    }
+   }
+
+  function expandCollapse(index) {    
+    const filterArray = categoryCollapseToggle.filter(x => x.index === index && x.toggle === true)    
+    if (filterArray.length === 0) {
+      return false
+    } else {
+      return true
+    }
+   }   
+  
+  const budgetOutCategoryTotal = (x) => {      
+    let sum = 0
+    for (const i of budgetOutExpenseArray) {
+      console.log(i)
+      if (x === i.category) {
+        console.log('y.cost',i.cost)
+        console.log('sum1',sum)
+        sum += i.cost 
+        console.log('sum2',sum)         
+      }     
+    }
+    console.log('sum3',sum)    
+    return sum        
+  }   
+
+    return (
+      <div className='flex flex-col items-center w-screen'> 
+        <div className='w-[90%] px-4 p-4 bg-white rounded-2xl flex flex-col items-center text-center'>
+
+          <div className='flex flex-col justify-between w-full'>   
+            {budgetOutCategoryTitleHandler().map((x, index) => {               
+              return( 
+                <div className='mb-4' key={index}>
+
+                  <div className='flex flex-row'>
+                    <div className='w-[60%] text-left'>
+                      <Typography variant='h6'>                        
+                        {x}
+                      </Typography>
+                      {console.log(x)}
+                    </div>
+
+                    <div className='w-[30%]'>
+                      <Typography variant='h6'>
+                        ${budgetOutCategoryTotal(x)}
+                      </Typography>
+                    </div>
+                    
+                    <div className='w-[10%]'>
+                      <IconButton 
+                        aria-label="expand"                        
+                        onClick={() => handleCollapseButtonClick(index)}>
+                        {expandIcon(index)}
+                      </IconButton>
+                    </div>  
+
+                  </div>
+                  
+                  <div className='flex flex-col w-full'>                       
+                    {budgetOutExpenseArray.map(y => {
+                      if (x === y.category) {
+                        return (
+                          <div>
+                            <Collapse in={expandCollapse(index)}>                              
+                              {<div>
+                                {y.title}
+                                {y.cost}
+                                <DeleteIcon fontSize='small' />
+                                <EditIcon fontSize='small' />
+                              </div>}     
+                            </Collapse>
+                          </div>
+                        )
+                      }})}      
+                  </div>                   
+
+                  <Divider varient='fullWidth' sx={{ borderBottomWidth: '.1rem' }}/>                  
+
+                </div>
+              )
+            })}
+
+          </div>         
+
+          <div>
+            <AddExpenseFormBudgetOut /> 
           </div>
 
         </div>
@@ -679,11 +810,20 @@ function App() {
   }
 
   function BudgetOutHeader() {
+    const budgetOutExpenseValuesArray = budgetOutExpenseArray.map(x => x.cost)    
+   
+    const budgetInExpenseTotal = () => {
+      let sum = 0
+      for (const x of budgetOutExpenseValuesArray) {
+        sum += x
+      }
+      return sum
+    }    
     
     return (
       <div className='text-white m-2'>
         <Typography variant='h5' sx={{ fontWeight: '100' }}>out</Typography>
-        <Typography variant='h4'>$2,000</Typography>
+        <Typography variant='h4'>${budgetInExpenseTotal()}</Typography>
       </div>
     )
   }
@@ -998,10 +1138,11 @@ function App() {
         {/* <BudgetInAccordion /> */}
         <BudgetInCollapse />
         <BudgetOutHeader />
-        <BudgetOutAccordion />
-        <TransitionGroupExample />
+        <BudgetOutCollapse />
+        {/* <BudgetOutAccordion /> */}
+        {/* <TransitionGroupExample />
         <TestField />
-        <AddExpenseForm />
+        <AddExpenseForm /> */}
         <div className='h-24'></div>
       </div>
     )
